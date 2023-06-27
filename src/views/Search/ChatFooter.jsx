@@ -17,11 +17,14 @@ const emptyMessage = {
   question: "",
 };
 
-const ChatFooter = ({ sentMsg, conversation_key }) => {
- 
-  const propRef = useRef(conversation_key );
+const ChatFooter = ({ sentMsg, conversation_key, existconversationKey }) => {
+  console.log(
+    existconversationKey,
+    "from chatfooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo"
+  );
+  const propRef = useRef(conversation_key);
   useEffect(() => {
-    propRef.current = conversation_key ;
+    propRef.current = conversation_key;
   }, [conversation_key]);
 
   const dispatch = useDispatch();
@@ -31,8 +34,8 @@ const ChatFooter = ({ sentMsg, conversation_key }) => {
   const [message, setMessage] = useState(emptyMessage);
   const [loading, setLoading] = useState(false);
   const messageRef = useRef(null);
-  const [historyApi , setHistoryApi]=useState([])
-  const [historyData , setHistroyData]=useState([])
+  const [historyApi, setHistoryApi] = useState([]);
+  const [historyData, setHistroyData] = useState([]);
   // const [chatHistory , setChathistory] =useState([])
   const fetchSubDomainList = async (domainId) => {
     setSubDomainList([]);
@@ -55,13 +58,13 @@ const ChatFooter = ({ sentMsg, conversation_key }) => {
   useEffect(() => {
     messageRef?.current?.focus();
   }, []);
-  const [sessionId, setSessionId] = useState('');
+  const [sessionId, setSessionId] = useState("");
 
   useEffect(() => {
     const initialSessionId = getRandomInt();
     setSessionId(initialSessionId);
   }, []);
-  
+
   function getRandomInt() {
     return Math.floor(Math.random() * Number.MAX_SAFE_INTEGER);
   }
@@ -72,93 +75,89 @@ const ChatFooter = ({ sentMsg, conversation_key }) => {
     }
   }, [message, selectedDomain, loading]);
 
-
   function generateUniqueValue() {
     return Math.floor(Math.random() * 1000000); // Adjust as needed for uniqueness
   }
 
-useEffect(()=>{chatHistoryDisplay()},[])
+  useEffect(() => {
+    chatHistoryDisplay();
+  }, []);
 
- 
-
-const chatHistoryDisplay=async ()=>{
-  console.log('called')
-  const thirdResponse=await client.get("/conversations/")
-  console.log(thirdResponse , 're')
-  console.log(thirdResponse.data , 'dddddddddddddddddd')
-  setHistroyData(thirdResponse)
-  // console.log(  dispatch(setChatHistory(historyData)) , 'from foter')
-  console.log(dispatch(setChatHistory(thirdResponse)))
-  
-}
+  const chatHistoryDisplay = async () => {
+    console.log("called");
+    const thirdResponse = await client.get("/conversations/");
+    console.log(thirdResponse, "re");
+    console.log(thirdResponse.data, "dddddddddddddddddd");
+    setHistroyData(thirdResponse);
+    // console.log(  dispatch(setChatHistory(historyData)) , 'from foter')
+    console.log(dispatch(setChatHistory(thirdResponse)));
+  };
 
   const searchRequest = async (reqBody) => {
     setLoading(true);
 
     try {
-
       const { data } = await aiClient.post("/search/", reqBody);
 
- 
       const question = reqBody.question;
       const answer = data.output;
       const conversation = Math.floor(Math.random() * 1000000);
       if (data?.output) {
-     
-        if(conversation_key){
-       
+        if (conversation_key) {
           const secondResponse = await client.post("/history/", {
             question,
             answer,
-            conversation_key,
+            conversation_key: conversation_key,
           });
-          console.log(secondResponse , 'secondresponse print')
+
           // dispatch(setChatHistory(secondResponse));
-         console.log( sentMsg({
+          sentMsg({
             text: data.output,
             time: getMessageTime(),
             types: "received",
-          }) , 'recieved anser');
-          chatHistoryDisplay()
-          // if(secondResponse?.answer){
-          //   console.log('ttttttttttttttttttttttttttttttttttttttt')
-          //  const thirdResponse=await client.get("/conversations")
-          //  console.log(thirdResponse , 'rfrom chatfooter')
-          //  dispatch(setChatHistory(thirdResponse));
-          // }
-        }else{
-      
-          const num = historyApi.conversation_key
-          if (num){
+          });
+          chatHistoryDisplay();
+        } else if (existconversationKey) {
+          const secondResponse = await client.post("/history/", {
+            question,
+            answer,
+            conversation_key: existconversationKey,
+          });
+          console.log(secondResponse, "secondresponse print");
+          // dispatch(setChatHistory(secondResponse));
+          sentMsg({
+            text: data.output,
+            time: getMessageTime(),
+            types: "received",
+          });
+          chatHistoryDisplay();
+        } else {
+          const num = historyApi.conversation_key;
+          if (num) {
             const secondResponse = await client.post("/history/", {
               question,
               answer,
-              conversation_key: num, 
+              conversation_key: num,
             });
             //  dispatch(setChatHistory(secondResponse));
-            setHistoryApi(secondResponse.data)
-            chatHistoryDisplay()
-          }else{
+            setHistoryApi(secondResponse.data);
+            chatHistoryDisplay();
+          } else {
             const secondResponse = await client.post("/history/", {
               question,
               answer,
-              conversation_key: conversation, 
+              conversation_key: conversation,
             });
-            // dispatch(setChatHistory(secondResponse));
-            setHistoryApi(secondResponse.data)
-            chatHistoryDisplay()
-            console.log( sentMsg({
+
+            setHistoryApi(secondResponse.data);
+            chatHistoryDisplay();
+            sentMsg({
               text: data.output,
               time: getMessageTime(),
               types: "received",
-            }), 'seconf sentMsg') ;
+            });
           }
-         
         }
-      
-
-     
-   
       }
     } catch (error) {
       console.error(error);
@@ -296,6 +295,7 @@ const chatHistoryDisplay=async ()=>{
 
 const mapStateToProps = (state) => ({
   conversation_key: state.conversationReducer.conversationKey,
+  existconversationKey: state.conversationReducer.existconversationKey,
 });
 
 export default connect(mapStateToProps, { sentMsg })(ChatFooter);

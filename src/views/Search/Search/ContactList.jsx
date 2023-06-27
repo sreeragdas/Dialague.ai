@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { useDispatch } from "react-redux";
-import { setConversationKey } from "../../../redux/action/conversationKey";
+import { setConversationKey  ,setExistConversationKey} from "../../../redux/action/conversationKey";
 import { client } from "../../../axios";
 import { Plus, Edit2, Trash, Check } from "react-feather";
 import "./chatHistory.css";
@@ -78,29 +78,27 @@ const ContactList = ({ chatHistory }) => {
     console.log("hi", conversation);
     dispatch(StartConversation(true))
     const que = await client.get(`history/?conversation=${conversation}`);
+    console.log(que.data[0].conversation_key, 'iddddddddddddd')
+    dispatch(setExistConversationKey(que.data[0].conversation_key))
+   
+    console.log(que.data.length , 'lenf')
+ 
+   
 
-  
-     dispatch( sentMsg({
-        text: que.data[0].question,
+    for(let i =0 ; i<que.data.length ; i++){
+console.log('hi from lop')
+   console.log(   dispatch( sentMsg({
+        text: que.data[i].question,
         time: getMessageTime(),
         types: "sent",
-      }) , 'question'
-    )
- 
-    dispatch(  sentMsg({
-        text: que.data[0].answer,
+      }) )  , 'isnide looop question');
+      console.log(   dispatch(  sentMsg({
+        text: que.data[i].answer,
         time: getMessageTime(),
         types: "received",
       })
-    )
-
-    // for(let i =0 ; i>que.data?.length ; i++){
-    //   sentMsg({
-    //     text: que.data[i],
-    //     time: getMessageTime(),
-    //     types: "received",
-    //   });
-    // }
+    ) , 'inside loop answe')
+    }
     // dispatch(sentMsg(data.data));
   };
   console.log(history, "hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh");
@@ -143,6 +141,7 @@ const ContactList = ({ chatHistory }) => {
                             />
                           ) : (
                             <div
+                            style={{cursor:'pointer'}}
                               onClick={() => {
                                 handleOnClick(item.id);
                               }}
@@ -152,7 +151,7 @@ const ContactList = ({ chatHistory }) => {
                             </div>
                           )}
                         </div>
-                        <div style={{marginLeft:'10px' , marginRight:'10px'}}>
+                        <div style={{marginLeft:'10px' , marginRight:'10px' ,cursor:'pointer'}}>
                           {isEditing ? (
                             <Check
                               onClick={() => handleSaveClick(item.id)}
@@ -166,7 +165,7 @@ const ContactList = ({ chatHistory }) => {
                           )}
                         </div>
                         <div
-                          style={{ justifyItems: "end" }}
+                          style={{ justifyItems: "end" ,cursor:'pointer' }}
                           onClick={() => onDeleteIndex(item.id)}
                         >
                           <Trash />

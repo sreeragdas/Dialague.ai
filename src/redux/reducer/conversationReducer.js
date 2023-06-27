@@ -1,9 +1,10 @@
 // chatHistoryReducer.js
 
-import { SET_CONVERSATION_KEY } from "../constants/conversation";
+import { SET_CONVERSATION_KEY , SET_EXISTINGCONVERSATION_KEY } from "../constants/conversation";
 
 const initialState = {
   conversationKey: null,
+  existconversationKey:null
 };
 
 const conversationReducer  = (state = initialState, action) => {
@@ -13,6 +14,11 @@ const conversationReducer  = (state = initialState, action) => {
         ...state,
         conversationKey: action.payload,
       };
+      case SET_EXISTINGCONVERSATION_KEY:
+        return {
+          ...state,
+          existconversationKey: action.payload,
+        };
 
     default:
       return state;
