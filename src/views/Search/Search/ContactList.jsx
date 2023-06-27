@@ -141,7 +141,7 @@ console.log('hi from lop')
                             />
                           ) : (
                             <div
-                            style={{cursor:'pointer'}}
+                            style={{cursor:'pointer' ,  fontSize:'1.5rem'}}
                               onClick={() => {
                                 handleOnClick(item.id);
                               }}
