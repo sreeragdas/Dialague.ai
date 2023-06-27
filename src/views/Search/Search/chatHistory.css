@@ -1,0 +1,12 @@
+
+    .addChatButton{
+        border-radius: 5px;
+        width: 80%;
+        margin-top: 20px;
+        margin-left: 10px;
+        text-align: left;
+        color: #fff;
+        background-color: black;
+        border-color: grey;
+    
+    }
