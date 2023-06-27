@@ -133,19 +133,7 @@ const ContactList = ({ chatHistory }) => {
                       }}
                     >
                       <div style={{ display: "flex", flexDirection: "row" }}>
-                        <div>
-                          {isEditing ? (
-                            <Check
-                              onClick={() => handleSaveClick(item.id)}
-                              style={{ justifyItems: "end" }}
-                            /> // Pass a function reference
-                          ) : (
-                            <Edit2
-                              onClick={() => handleEditClick(item)}
-                              style={{ justifyItems: "end" }}
-                            /> // Pass a function reference
-                          )}
-                        </div>
+                        
                         <div style={{ marginLeft: "5px", fontSize: "1.3rem" }}>
                           {isEditing ? (
                             <input
@@ -162,6 +150,19 @@ const ContactList = ({ chatHistory }) => {
                               {" "}
                               {item.title}{" "}
                             </div>
+                          )}
+                        </div>
+                        <div style={{marginLeft:'10px' , marginRight:'10px'}}>
+                          {isEditing ? (
+                            <Check
+                              onClick={() => handleSaveClick(item.id)}
+                              style={{ justifyItems: "end" }}
+                            /> // Pass a function reference
+                          ) : (
+                            <Edit2
+                              onClick={() => handleEditClick(item)}
+                              style={{ justifyItems: "end" }}
+                            /> // Pass a function reference
                           )}
                         </div>
                         <div
