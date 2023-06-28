@@ -5,6 +5,8 @@
   "dependencies": {
     "@amcharts/amcharts4": "^4.10.29",
     "@amcharts/amcharts4-geodata": "^4.1.26",
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
     "@fortawesome/fontawesome-svg-core": "^6.2.0",
     "@fortawesome/free-brands-svg-icons": "^6.2.0",
     "@fortawesome/free-solid-svg-icons": "^6.2.0",
@@ -14,6 +16,7 @@
     "@fullcalendar/list": "^5.11.3",
     "@fullcalendar/react": "^5.11.2",
     "@fullcalendar/timegrid": "^5.11.3",
+    "@mui/material": "^5.13.6",
     "@react-hook/window-size": "^3.1.1",
     "@sweetalert2/theme-bootstrap-4": "^5.0.15",
     "@testing-library/jest-dom": "^5.16.5",

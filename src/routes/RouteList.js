@@ -56,7 +56,7 @@ import Domain from "../views/ManageDomain/ManageDomainList";
 import SubDomain from "../views/ManageSubdomain/ManageSubdomainList";
 import Search from "../views/Search/Search";
 import Account from "../views/Account"
-
+import Role from '../views/ManageRole/ManageRoleList'
 export const routes = [
     { path: 'account', exact: true, component: Account },
     { path: 'dashboard', exact: true, component: Dashboard },
@@ -67,7 +67,8 @@ export const routes = [
     { path: "manage-data", exact: true, component: ManageData },
     { path: "chats", exact: true, component: Chats },
     { path: 'search', exact: true, component: Search },
-
+    
+    { path: 'role', exact: true, component: Role },
 
     //Apps
     // { path: 'apps/chat/chats', exact: true, component: Chats },

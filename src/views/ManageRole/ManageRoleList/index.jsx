@@ -1,6 +1,7 @@
 import React from "react";
-import ManageDomainAppHeader from "../ManageDomainAppHeader";
-import ManageDomainAppBody from "./ManageDomainAppBody";
+import ManageRoleAppHeader from "../ManageRoleAppHeader";
+import ManageRoleAppBody from "./ManageRoleAppBody";
+
 
 const ManageRoleList = () => {
   return (
@@ -12,7 +13,10 @@ const ManageRoleList = () => {
         <div className="">
           <div className="contactapp-detail-wrap">
             {/* <ManageDomainAppHeader />
+          
             <ManageDomainAppBody /> */}
+            <ManageRoleAppHeader />
+            <ManageRoleAppBody />
           </div>
         </div>
       </div>

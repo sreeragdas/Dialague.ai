@@ -132,7 +132,7 @@ console.log('hi from lop')
                     >
                       <div style={{ display: "flex", flexDirection: "row" }}>
                         
-                        <div style={{ marginLeft: "5px", fontSize: "1.3rem" }}>
+                        <div style={{ marginLeft: "5px" }}>
                           {isEditing ? (
                             <input
                               type="text"
@@ -141,7 +141,7 @@ console.log('hi from lop')
                             />
                           ) : (
                             <div
-                            style={{cursor:'pointer' ,  fontSize:'1.5rem'}}
+                            style={{cursor:'pointer' }}
                               onClick={() => {
                                 handleOnClick(item.id);
                               }}

@@ -67,6 +67,15 @@ export const SidebarMenu = [
         grp_name: "apps",
         permission: "view_organization",
       },
+      {
+        id: "dash_role",
+        name: "Roles",
+        icon: <Icons.Accessible />,
+        path: "/role",
+        grp_name: "apps",
+        permission: "view_organization",
+      
+      },
     ],
   },
   /* {
