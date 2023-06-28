@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Button, Col, Form, Modal, Row, Spinner } from "react-bootstrap";
 import { useFormik } from "formik";
-import OutlinedInput from '@mui/material/OutlinedInput';
+import OutlinedInput from "@mui/material/OutlinedInput";
 import * as Yup from "yup";
 import usePermissionList from "../../hooks/usePermissionList";
 import { client } from "../../axios";
@@ -9,11 +9,11 @@ import SuccessMessage from "../../components/Modals/SuccessMessage";
 import AppFormControlFeedback from "../../components/Forms/AppFormControlFeedback";
 import AppFormLabel from "../../components/Forms/AppFormLabel";
 import { NAME_WITH_SPACE_REGEX } from "../../utils/common-util";
-import Select from '@mui/material/Select';
-import Checkbox from '@mui/material/Checkbox';
-import MenuItem from '@mui/material/MenuItem';
-import ListItemText from '@mui/material/ListItemText';
-import Chip from '@mui/material/Chip';
+import Select from "@mui/material/Select";
+import Checkbox from "@mui/material/Checkbox";
+import MenuItem from "@mui/material/MenuItem";
+import ListItemText from "@mui/material/ListItemText";
+import Chip from "@mui/material/Chip";
 const initialDomain = {
   name: "",
   permission: [],
@@ -46,7 +46,7 @@ const CreateNewRole = ({ show, close, domainData = initialDomain }) => {
   const handleSubmit = async (values) => {
     setError("");
     setLoading(true);
-
+console.log(values , 'from on submot')
     try {
       let response = null;
       if (values.id) {
@@ -127,43 +127,42 @@ const CreateNewRole = ({ show, close, domainData = initialDomain }) => {
                     label="Permission"
                     required={false}
                   />
-                
 
-<Select
-  multiple
-  value={formik.values.permission || []} // Provide a default empty array
-  onChange={(event) =>
-    formik.setFieldValue("permission", event.target.value)
-  }
-  onBlur={formik.handleBlur}
-  input={<OutlinedInput id="permission" />}
-  renderValue={(selected) => (
-    <div style={{ display: "flex", flexWrap: "wrap" }}>
-      {selected &&
-        selected.map((value) => (
-          <Chip key={value} label={value} style={{ margin: 2 }} />
-        ))}
-    </div>
-  )}
-  MenuProps={MenuProps}
->
-  {permissionList.map((permission) => (
-    <MenuItem key={permission.id} value={permission.name}>
-      <Checkbox
-        checked={
-          (formik.values.permission || []).includes(permission.name)
-        } // Provide a default empty array
-        name={permission.name}
-        color="primary"
-      />
-      <ListItemText primary={permission.name} />
-    </MenuItem>
-  ))}
-</Select>
-
-
-
-
+                  <Select
+                    multiple
+                    value={formik.values.permission || []} // Provide a default empty array
+                    onChange={(event) =>
+                      formik.setFieldValue("permission", event.target.value)
+                    }
+                    onBlur={formik.handleBlur}
+                    input={<OutlinedInput id="permission" />}
+                    renderValue={(selected) => (
+                      <div style={{ display: "flex", flexWrap: "wrap" }}>
+                        {selected &&
+                          selected.map((value) => (
+                            <Chip
+                              key={value}
+                              label={value}
+                              style={{ margin: 2 }}
+                            />
+                          ))}
+                      </div>
+                    )}
+                    MenuProps={MenuProps}
+                  >
+                    {permissionList.map((permission) => (
+                      <MenuItem key={permission.id} value={permission.id}>
+                        <Checkbox
+                          checked={(formik.values.permission || []).includes(
+                            permission.name
+                          )} // Provide a default empty array
+                          name={permission.name}
+                          color="primary"
+                        />
+                        <ListItemText primary={permission.name} />
+                      </MenuItem>
+                    ))}
+                  </Select>
                 </Form.Group>
               </Col>
             </Row>
