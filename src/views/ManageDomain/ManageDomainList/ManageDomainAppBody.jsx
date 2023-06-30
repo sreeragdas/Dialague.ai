@@ -168,7 +168,7 @@ const ManageDomainAppBody = () => {
     return (
       <div className="d-flex align-items-center">
         <div className="d-flex">
-          {authorizeDoAction(CHANGE_PERMISSIONS) && (
+          {/* {authorizeDoAction(CHANGE_PERMISSIONS) && (
             <Button
               variant="flush-dark"
               onClick={() => handleEdit(row)}
@@ -183,7 +183,21 @@ const ManageDomainAppBody = () => {
                 </span>
               </span>
             </Button>
-          )}
+          )} */}
+               <Button
+              variant="flush-dark"
+              onClick={() => handleEdit(row)}
+              className="btn-icon btn-rounded flush-soft-hover"
+              data-bs-toggle="tooltip"
+              data-placement="top"
+              data-bs-original-title="Edit"
+            >
+              <span className="icon">
+                <span className="feather-icon">
+                  <Edit />
+                </span>
+              </span>
+            </Button>
 
           {authorizeDoAction(DELETE_PERMISSIONS) && (
             <Button

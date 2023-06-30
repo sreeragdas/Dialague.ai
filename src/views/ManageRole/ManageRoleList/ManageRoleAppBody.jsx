@@ -22,7 +22,6 @@ import { client } from "../../../axios";
 import DeleteConfirmation from "../../../components/Modals/DeleteConfirmation";
 import { authorizeDoAction } from "../../../utils/common-util";
 import CreateNewRole from "../CreateNewRole";
-// import CreateNewDomain from "../CreateNewDomain";
 
 const CHANGE_PERMISSIONS = "change_domain";
 const DELETE_PERMISSIONS = "delete_domain";
@@ -82,7 +81,7 @@ const initObj = {
 const initialDomain = {
   id: "",
   name: "",
-  description: "",
+  permissions: [],
 };
 
 const ManageRoleAppBody = () => {
@@ -99,7 +98,7 @@ const ManageRoleAppBody = () => {
     {
       dataField: "id",
       text: "ID",
-     
+      // hidden: true,
     },
     {
       dataField: "name",
@@ -110,21 +109,19 @@ const ManageRoleAppBody = () => {
       sort: true,
       headerSortingClasses,
     },
+  
     {
-        dataField: "",
-        text: "Actions",
-        formatter: (cell, row) => actionFormater(row),
-      },
+      dataField: "",
+      text: "Actions",
+      formatter: (cell, row) => actionFormater(row),
+    },
     
-    
-
-    
-   
+ 
   ];
 
   const handleEdit = (row) => {
-    const { id, name, permission } = row;
-    setSelectedDomain({ id, permission });
+    const { id, name, permissions } = row;
+    setSelectedDomain({ id, name, permissions });
     setShowDomainForm(true);
   };
 
@@ -132,7 +129,7 @@ const ManageRoleAppBody = () => {
     return (
       <div className="d-flex align-items-center">
         <div className="d-flex">
- 
+          {/* {authorizeDoAction(CHANGE_PERMISSIONS) && (
             <Button
               variant="flush-dark"
               onClick={() => handleEdit(row)}
@@ -147,9 +144,23 @@ const ManageRoleAppBody = () => {
                 </span>
               </span>
             </Button>
+          )} */}
+               <Button
+              variant="flush-dark"
+              onClick={() => handleEdit(row)}
+              className="btn-icon btn-rounded flush-soft-hover"
+              data-bs-toggle="tooltip"
+              data-placement="top"
+              data-bs-original-title="Edit"
+            >
+              <span className="icon">
+                <span className="feather-icon">
+                  <Edit />
+                </span>
+              </span>
+            </Button>
 
-
- 
+          {authorizeDoAction(DELETE_PERMISSIONS) && (
             <Button
               variant="flush-dark"
               onClick={() => setSelectedDeleteRow(row)}
@@ -164,15 +175,14 @@ const ManageRoleAppBody = () => {
                 </span>
               </span>
             </Button>
-     
+          )}
         </div>
       </div>
     );
   };
 
   const onConfirmDelete = async () => {
- 
-     return client.delete(`/groups/${selectedDeleteRow.id}/`);
+    return client.delete(`/domains/${selectedDeleteRow.id}/`);
   };
 
   const onCancelDelete = () => {
@@ -227,20 +237,20 @@ const ManageRoleAppBody = () => {
           <div className="quick-access-form-wrap"></div>
         </div>
 
-     
+        {authorizeDoAction(CHANGE_PERMISSIONS) && showDomainForm && (
           <CreateNewRole
             show={showDomainForm}
             close={() => setShowDomainForm(!showDomainForm)}
             domainData={selectedDomain}
           />
-        
+        )}
 
-        {selectedDeleteRow && (
+        {authorizeDoAction(DELETE_PERMISSIONS) && selectedDeleteRow && (
           <DeleteConfirmation
             onConfirm={onConfirmDelete}
             onCancel={onCancelDelete}
-            warningMessage={`You are about to permanently delete the below role - ${selectedDeleteRow?.name}`}
-            successMessage={`role - ${selectedDeleteRow?.name} has been deleted successfully.`}
+            warningMessage={`You are about to permanently delete the below domain - ${selectedDeleteRow.name}`}
+            successMessage={`Domain - ${selectedDeleteRow.name} has been deleted successfully.`}
           />
         )}
 
@@ -311,7 +321,28 @@ const ManageRoleAppBody = () => {
                               </Form.Select>
                             </Form.Group>
 
-                          
+                            <Form.Group className="d-xxl-flex d-none align-items-center mb-0">
+                              <label className="flex-shrink-0 mb-0 me-2">
+                                Organization :
+                              </label>
+                              <Form.Select
+                                size="sm"
+                                className="w-200p"
+                                value={filters.org}
+                                onChange={(e) =>
+                                  setFilters({
+                                    ...filters,
+                                    org: e.target.value,
+                                  })
+                                }
+                              >
+                                {orgList.map((org) => (
+                                  <option value={org?.id} key={org?.id}>
+                                    {org?.company_name}
+                                  </option>
+                                ))}
+                              </Form.Select>
+                            </Form.Group>
 
                             <div className="d-xxl-flex d-none align-items-center mb-0">
                               <Button

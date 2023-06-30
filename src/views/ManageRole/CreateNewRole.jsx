@@ -15,18 +15,28 @@ import MenuItem from "@mui/material/MenuItem";
 import ListItemText from "@mui/material/ListItemText";
 import Chip from "@mui/material/Chip";
 const initialDomain = {
+  id: "",
   name: "",
-  permission: [],
+  permissions: {},
 };
 
 const CreateNewRole = ({ show, close, domainData = initialDomain }) => {
+  console.log(domainData.permissions[0]?.name, "domainDatadomainDatadomainData");
+
   const [permissionList] = usePermissionList(true);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const nameRef = useRef(null);
+  const { id, name, permissions } = domainData;
+  console.log(permissions, "pppppppppppppppppppppppppppppppppppppppp");
   const formik = useFormik({
-    initialValues: domainData,
+    initialValues: {
+      id: id || initialDomain.id,
+      name: name || initialDomain.name,
+      permissions: permissions ? Object.keys(permissions) : [], // Extract the keys from the permissions object
+
+    },
     validationSchema: Yup.object({
       id: Yup.string(),
       name: Yup.string()
@@ -38,6 +48,7 @@ const CreateNewRole = ({ show, close, domainData = initialDomain }) => {
       handleSubmit(values);
     },
   });
+  console.log(formik.values.permissions, "iddddddddddddddddddddddd");
 
   useEffect(() => {
     nameRef?.current?.focus();
@@ -46,7 +57,7 @@ const CreateNewRole = ({ show, close, domainData = initialDomain }) => {
   const handleSubmit = async (values) => {
     setError("");
     setLoading(true);
-console.log(values , 'from on submot')
+    console.log(values, "from on submot");
     try {
       let response = null;
       if (values.id) {
@@ -61,7 +72,7 @@ console.log(values , 'from on submot')
         return true;
       }
     } catch (error) {
-      setError(`Unable to ${values.id ? "update" : "create"} domain.`);
+      setError(`Unable to ${values.id ? "update" : "create"} role.`);
       console.error(error.response);
     } finally {
       setLoading(false);
@@ -121,7 +132,10 @@ console.log(values , 'from on submot')
 
             <Row className="gx-3">
               <Col sm={12} as={Form.Group}>
-                <Form.Group className="mb-3">
+                <Form.Group
+                  className="mb-3"
+                  style={{ display: "flex", flexDirection: "column" }}
+                >
                   <AppFormLabel
                     htmlFor="permission"
                     label="Permission"
@@ -130,12 +144,12 @@ console.log(values , 'from on submot')
 
                   <Select
                     multiple
-                    value={formik.values.permission || []} // Provide a default empty array
+                    value={formik.values.permissions || []} // Provide a default empty array
                     onChange={(event) =>
-                      formik.setFieldValue("permission", event.target.value)
+                      formik.setFieldValue("permissions", event.target.value)
                     }
                     onBlur={formik.handleBlur}
-                    input={<OutlinedInput id="permission" />}
+                    input={<OutlinedInput id="permissions" />}
                     renderValue={(selected) => (
                       <div style={{ display: "flex", flexWrap: "wrap" }}>
                         {selected &&
@@ -150,12 +164,13 @@ console.log(values , 'from on submot')
                     )}
                     MenuProps={MenuProps}
                   >
-                    {permissionList.map((permission) => (
+                    {permissionList.map((permission, index) => (
                       <MenuItem key={permission.id} value={permission.id}>
                         <Checkbox
-                          checked={(formik.values.permission || []).includes(
-                            permission.name
-                          )} // Provide a default empty array
+                          checked={(formik.values.permissions || []).includes(
+                            permission.id
+                          )}
+                          // Provide a default empty array
                           name={permission.name}
                           color="primary"
                         />

@@ -16,6 +16,7 @@ const initialDomain = {
 };
 
 const CreateNewDomain = ({ show, close, domainData = initialDomain }) => {
+  console.log(domainData , 'domainDatadomainDatadomainData')
   const [domainList] = useDomainList(true);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -30,11 +31,14 @@ const CreateNewDomain = ({ show, close, domainData = initialDomain }) => {
         .matches(NAME_WITH_SPACE_REGEX, "Name is not valid"),
       description: Yup.string().required("Description is required"),
     }),
+
+    
     onSubmit: (values) => {
       handleSubmit(values);
     },
   });
-
+  console.log(formik.values.id , 'iiiiiiiiiiiiiiiddddddd')
+  console.log(formik.initialValues.id , 'iddddddddddddddddddddddd')
   useEffect(() => {
     nameRef?.current?.focus();
   }, [nameRef]);
